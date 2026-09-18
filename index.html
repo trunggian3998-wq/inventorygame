@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎄 Saga of Survival - Giáng Sinh</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #07111f;
+    color: white;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 15px;
+}
+
+.header {
+    background: linear-gradient(135deg, #b30000, #176b35);
+    padding: 22px;
+    border-radius: 18px;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.subtitle {
+    margin-top: 8px;
+    color: #ffe9b0;
+    font-size: 14px;
+}
+
+.event {
+    display: inline-block;
+    margin-top: 12px;
+    background: #c62828;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.stat {
+    background: #111c2d;
+    border: 1px solid #26364d;
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.stat-title {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.stat-value {
+    margin-top: 6px;
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.card {
+    background: #111c2d;
+    border: 1px solid #26364d;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 18px;
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+input,
+select,
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #34465e;
+    font-size: 14px;
+}
+
+input,
+select {
+    background: #0b1626;
+    color: white;
+}
+
+button {
+    background: #176b35;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.btn-red {
+    background: #b42318;
+}
+
+.btn-blue {
+    background: #185abc;
+}
+
+.search {
+    margin-bottom: 12px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 850px;
+}
+
+th,
+td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #26364d;
+    text-align: left;
+}
+
+th {
+    color: #ffd166;
+    background: #0c1727;
+}
+
+.item-name {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.type {
+    color: #8be28b;
+}
+
+.note {
+    color: #cbd5e1;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.actions {
+    display: flex;
+    gap: 6px;
+}
+
+.actions button {
+    width: auto;
+    padding: 8px 10px;
+}
+
+.empty {
+    text-align: center;
+    padding: 30px;
+    color: #94a3b8;
+}
+
+.footer {
+    text-align: center;
+    color: #64748b;
+    font-size: 12px;
+    padding: 20px;
+}
+
+@media (max-width: 700px) {
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        padding: 18px;
+    }
+
+    .logo {
+        font-size: 21px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="logo">🎄 Saga of Survival</div>
+        <div class="subtitle">
+            Kho vật phẩm sự kiện Giáng Sinh
+        </div>
+        <div class="event">
+            🎅 CHRISTMAS EVENT
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-title">Loại vật phẩm</div>
+            <div class="stat-value" id="totalTypes">0</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-title">Tổng số lượng</div>
+            <div class="stat-value" id="totalQuantity">0</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-title">Phần thưởng đặc biệt</div>
+            <div class="stat-value">🎁 1</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>➕ Thêm vật phẩm Giáng Sinh</h2>
+
+        <div class="form-grid">
+
+            <input
+                id="name"
+                type="text"
+                placeholder="Tên vật phẩm"
+            >
+
+            <select id="type">
+                <option>Trang trí</option>
+                <option>Vật phẩm lễ hội</option>
+                <option>Vũ khí</option>
+                <option>Phần thưởng</option>
+            </select>
+
+            <input
+                id="quantity"
+                type="number"
+                min="0"
+                value="1"
+                placeholder="Số lượng"
+            >
+
+            <select id="rarity">
+                <option>Thường</option>
+                <option>Hiếm</option>
+                <option>Đặc biệt</option>
+                <option>Huyền thoại</option>
+            </select>
+
+        </div>
+
+        <br>
+
+        <input
+            id="note"
+            type="text"
+            placeholder="Ghi chú / công thức chế tạo"
+        >
+
+        <br><br>
+
+        <button onclick="addItem()">
+            🎁 Thêm vật phẩm
+        </button>
+    </div>
+
+    <div class="card">
+
+        <h2>🎄 Kho Giáng Sinh</h2>
+
+        <input
+            class="search"
+            id="search"
+            type="text"
+            placeholder="🔎 Tìm vật phẩm..."
+            oninput="render()"
+        >
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Vật phẩm</th>
+                        <th>Loại</th>
+                        <th>Số lượng</th>
+                        <th>Độ hiếm</th>
+                        <th>Thông tin</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+
+                <tbody id="itemList"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h2>🔄 Dữ liệu</h2>
+
+        <button
+            class="btn-red"
+            onclick="resetData()"
+        >
+            Xóa toàn bộ dữ liệu kho Giáng Sinh
+        </button>
+
+    </div>
+
+    <div class="footer">
+        🎄 Saga of Survival Christmas Inventory
+        <br>
+        Fan-made inventory • Không liên kết chính thức với nhà phát hành
+    </div>
+
+</div>
+
+
+<script>
+
+/* ==============================
+   DỮ LIỆU VẬT PHẨM GIÁNG SINH
+================================ */
+
+const christmasItems = [
+
+    {
+        id: 1,
+        name: "Christmas Tree",
+        type: "Trang trí",
+        quantity: 1,
+        rarity: "Đặc biệt",
+        note: "Cây Giáng Sinh • Công thức: 10 Pine Logs"
+    },
+
+    {
+        id: 2,
+        name: "Fireplace",
+        type: "Trang trí",
+        quantity: 1,
+        rarity: "Đặc biệt",
+        note: "Lò sưởi • 10 Clay + 10 Stone + 10 Pine Logs + 1 Leggings"
+    },
+
+    {
+        id: 3,
+        name: "Snowman",
+        type: "Vật phẩm lễ hội",
+        quantity: 1,
+        rarity: "Đặc biệt",
+        note: "Người tuyết • 5 Full Waterskin + 2 Pine Logs + 1 Turnip + 1 Hat + 1 Hardened Spear"
+    },
+
+    {
+        id: 4,
+        name: "Gift",
+        type: "Vật phẩm lễ hội",
+        quantity: 1,
+        rarity: "Đặc biệt",
+        note: "Quà Giáng Sinh • 4 Coarse Cloth + 4 Blueberries + 2 Rope"
+    },
+
+    {
+        id: 5,
+        name: "Rocking Boar",
+        type: "Trang trí",
+        quantity: 1,
+        rarity: "Đặc biệt",
+        note: "Heo bập bênh • 2 Boar Tusk + 6 Pine Logs + 4 Fur + 4 Coarse Cloth"
+    },
+
+    {
+        id: 6,
+        name: "Elemental Magician's Staff",
+        type: "Phần thưởng",
+        quantity: 1,
+        rarity: "Huyền thoại",
+        note: "Phần thưởng sự kiện Giáng Sinh • Không thể chế tạo • Attack 68 / Sneak 88 / Wall 50 / Durability 76"
+    }
+
+];
+
+
+/* ==============================
+   LOAD DATA
+================================ */
+
+let items = JSON.parse(
+    localStorage.getItem("sagaChristmasInventory")
+);
+
+if (!items) {
+
+    items = christmasItems;
+
+    localStorage.setItem(
+        "sagaChristmasInventory",
+        JSON.stringify(items)
+    );
+}
+
+
+/* ==============================
+   HIỂN THỊ
+================================ */
+
+function render() {
+
+    const list = document.getElementById("itemList");
+
+    const search = document
+        .getElementById("search")
+        .value
+        .toLowerCase()
+        .trim();
+
+    const filtered = items.filter(item =>
+        item.name.toLowerCase().includes(search) ||
+        item.type.toLowerCase().includes(search) ||
+        item.note.toLowerCase().includes(search)
+    );
+
+    list.innerHTML = "";
+
+    if (filtered.length === 0) {
+
+        list.innerHTML = `
+            <tr>
+                <td colspan="6" class="empty">
+                    Không tìm thấy vật phẩm 🎄
+                </td>
+            </tr>
+        `;
+
+        updateStats();
+        return;
+    }
+
+    filtered.forEach(item => {
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+
+            <td>
+                <div class="item-name">
+                    ${escapeHTML(item.name)}
+                </div>
+            </td>
+
+            <td>
+                <span class="type">
+                    ${escapeHTML(item.type)}
+                </span>
+            </td>
+
+            <td>
+                ${item.quantity}
+            </td>
+
+            <td>
+                ${escapeHTML(item.rarity)}
+            </td>
+
+            <td>
+                <div class="note">
+                    ${escapeHTML(item.note)}
+                </div>
+            </td>
+
+            <td>
+
+                <div class="actions">
+
+                    <button
+                        class="btn-blue"
+                        onclick="editItem(${item.id})"
+                    >
+                        Sửa
+                    </button>
+
+                    <button
+                        class="btn-red"
+                        onclick="deleteItem(${item.id})"
+                    >
+                        Xóa
+                    </button>
+
+                </div>
+
+            </td>
+        `;
+
+        list.appendChild(row);
+    });
+
+    updateStats();
+}
+
+
+/* ==============================
+   THỐNG KÊ
+================================ */
+
+function updateStats() {
+
+    document.getElementById("totalTypes").textContent =
+        items.length;
+
+    const total = items.reduce(
+        (sum, item) => sum + Number(item.quantity),
+        0
+    );
+
+    document.getElementById("totalQuantity").textContent =
+        total;
+}
+
+
+/* ==============================
+   THÊM
+================================ */
+
+function addItem() {
+
+    const name =
+        document.getElementById("name").value.trim();
+
+    const type =
+        document.getElementById("type").value;
+
+    const quantity =
+        Number(document.getElementById("quantity").value);
+
+    const rarity =
+        document.getElementById("rarity").value;
+
+    const note =
+        document.getElementById("note").value.trim();
+
+    if (!name) {
+
+        alert("Vui lòng nhập tên vật phẩm!");
+
+        return;
+    }
+
+    const newItem = {
+
+        id: Date.now(),
+
+        name: name,
+
+        type: type,
+
+        quantity: quantity || 0,
+
+        rarity: rarity,
+
+        note: note || "Vật phẩm sự kiện Giáng Sinh"
+
+    };
+
+    items.push(newItem);
+
+    save();
+
+    document.getElementById("name").value = "";
+    document.getElementById("quantity").value = "1";
+    document.getElementById("note").value = "";
+
+    render();
+}
+
+
+/* ==============================
+   SỬA
+================================ */
+
+function editItem(id) {
+
+    const item =
+        items.find(x => x.id === id);
+
+    if (!item) return;
+
+    const newName =
+        prompt("Tên vật phẩm:", item.name);
+
+    if (newName === null) return;
+
+    const newQuantity =
+        prompt("Số lượng:", item.quantity);
+
+    if (newQuantity === null) return;
+
+    const newNote =
+        prompt("Ghi chú:", item.note);
+
+    if (newNote === null) return;
+
+    item.name = newName.trim() || item.name;
+
+    item.quantity =
+        Number(newQuantity) >= 0
+        ? Number(newQuantity)
+        : item.quantity;
+
+    item.note =
+        newNote.trim() || item.note;
+
+    save();
+
+    render();
+}
+
+
+/* ==============================
+   XÓA
+================================ */
+
+function deleteItem(id) {
+
+    const item =
+        items.find(x => x.id === id);
+
+    if (!item) return;
+
+    const ok =
+        confirm(
+            "Bạn có chắc muốn xóa " +
+            item.name +
+            "?"
+        );
+
+    if (!ok) return;
+
+    items =
+        items.filter(x => x.id !== id);
+
+    save();
+
+    render();
+}
+
+
+/* ==============================
+   LƯU
+================================ */
+
+function save() {
+
+    localStorage.setItem(
+        "sagaChristmasInventory",
+        JSON.stringify(items)
+    );
+}
+
+
+/* ==============================
+   RESET
+================================ */
+
+function resetData() {
+
+    const ok =
+        confirm(
+            "Xóa toàn bộ dữ liệu và khôi phục kho Giáng Sinh ban đầu?"
+        );
+
+    if (!ok) return;
+
+    items =
+        JSON.parse(
+            JSON.stringify(christmasItems)
+        );
+
+    save();
+
+    render();
+}
+
+
+/* ==============================
+   CHỐNG HTML LỖI
+================================ */
+
+function escapeHTML(text) {
+
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* ==============================
+   CHẠY
+================================ */
+
+render();
+
+</script>
+
+</body>
+</html>
